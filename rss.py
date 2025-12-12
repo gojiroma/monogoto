@@ -1,83 +1,95 @@
+from flask import Flask, send_file, request
+from werkzeug.urls import unquote
+import requests
 import re
-from datetime import datetime, timezone, timedelta
-from xml.etree import ElementTree as ET
-from xml.dom import minidom
+import random
+from io import BytesIO
 
-JST = timezone(timedelta(hours=9))
+app = Flask(__name__)
 
-def parse_entries(markdown_text):
-    entries = markdown_text.strip().split('---')
-    parsed_entries = []
+def fetch_entry_md(url):
+    response = requests.get(url)
+    response.raise_for_status()
+    return response.text
+
+def parse_entries(markdown_content):
+    entries = []
+    for entry_block in re.findall(r'---(.*?)---', markdown_content, re.DOTALL):
+        entry = {}
+        title_match = re.search(r'^title:\s*(.*)', entry_block, re.MULTILINE)
+        date_match = re.search(r'^date:\s*(\d{8})', entry_block, re.MULTILINE)
+        content_match = re.search(r'content:\s*\|\s*\n(.*?)(?=\n---|\n$|$)', entry_block, re.DOTALL)
+        if title_match and date_match:
+            entry['title'] = title_match.group(1).strip()
+            entry['date'] = date_match.group(1)
+            if content_match:
+                content = content_match.group(1).strip()
+                content = re.sub(r'^\s*\|?\s*', '', content, flags=re.MULTILINE)
+                entry['content'] = content.replace('\n', ' ').strip()
+            entries.append(entry)
+    return entries
+
+def random_pastel_color():
+    r = random.randint(180, 255)
+    g = random.randint(180, 255)
+    b = random.randint(180, 255)
+    return f"rgb({r},{g},{b})"
+
+def generate_svg(title, content, width=358, height=128):
+    bg_color = random_pastel_color()
+    title_font_size = 12
+    content_font_size = 13
+    content_height = height - 30
+    content_width = width - 30
+
+    svg_content = f"""<svg width="{width}" height="{height}" xmlns="http://www.w3.org/2000/svg">
+        <rect width="100%" height="100%" fill="{bg_color}" />
+        <style>
+            .title {{
+                font-family: 'Hiragino Mincho Pro', 'Yu Mincho', serif;
+                font-size: {title_font_size}px;
+                fill: #333333;
+                text-anchor: end;
+                font-weight: bold;
+                letter-spacing: 2px;
+                dominant-baseline: middle;
+            }}
+            .title-bg {{
+                fill: rgba(255, 255, 255, 0.9);
+            }}
+            foreignObject {{
+                overflow: visible;
+            }}
+            .content {{
+                font-family: 'Hiragino Mincho Pro', 'Yu Mincho', serif;
+                font-size: {content_font_size}px;
+                color: #333333;
+                width: {content_width}px;
+                word-wrap: break-word;
+                white-space: pre-wrap;
+                line-height: 1.4;
+            }}
+        </style>
+        <foreignObject x="15" y="10" width="{content_width}" height="{content_height}">
+            <div xmlns="http://www.w3.org/1999/xhtml" class="content">{content}</div>
+        </foreignObject>
+        <rect x="0" y="{height - 25}" width="{width}" height="25" class="title-bg" />
+        <text x="{width - 10}" y="{height - 12}" class="title">{title}</text>
+    </svg>"""
+    return svg_content
+
+@app.route('/<path:title>')
+def diary_svg(title):
+    decoded_title = unquote(title)
+    entry_md_url = "https://things.poet.blue/entry.md"
+    markdown_content = fetch_entry_md(entry_md_url)
+    entries = parse_entries(markdown_content)
     for entry in entries:
-        entry = entry.strip()
-        if not entry:
-            continue
-        title_match = re.search(r'^title:\s*(.*)', entry, re.MULTILINE)
-        date_match = re.search(r'^date:\s*(\d{8})', entry, re.MULTILINE)
-        content_match = re.search(r'content:\s*\|\n([\s\S]*?)(?=\n---|\n$|\Z)', entry, re.MULTILINE)
-        if title_match and date_match and content_match:
-            title = title_match.group(1).strip()
-            yyyymmdd = date_match.group(1)
-            content = content_match.group(1).strip()
-            content = re.sub(r'^\s*\|\s*', '', content, flags=re.MULTILINE)
-            parsed_entries.append({'title': title, 'date': yyyymmdd, 'content': content})
-    return parsed_entries
-
-def format_date(yyyymmdd):
-    dt = datetime.strptime(yyyymmdd, '%Y%m%d')
-    return dt.strftime('%Y-%m-%d')
-
-def generate_rss(entries, output_file):
-    rss = ET.Element('rss', {
-        'version': '2.0',
-        'xmlns:atom': 'http://www.w3.org/2005/Atom',
-        'xmlns:itunes': 'http://www.itunes.com/dtds/podcast-1.0.dtd',
-        'xmlns:media': 'http://search.yahoo.com/mrss/'
-    })
-    channel = ET.SubElement(rss, 'channel')
-    ET.SubElement(channel, 'title').text = '誤字ロマの物事'
-    ET.SubElement(channel, 'link').text = 'https://things.poet.blue'
-    ET.SubElement(channel, 'description').text = '誤字ロマの物事です。'
-    ET.SubElement(channel, 'language').text = 'ja'
-    now_jst = datetime.now(JST)
-    ET.SubElement(channel, 'lastBuildDate').text = now_jst.strftime('%a, %d %b %Y %H:%M:%S +0900')
-    ET.SubElement(channel, 'itunes:image', href='https://things.poet.blue/cover.png')
-    ET.SubElement(channel, 'media:thumbnail', url='https://things.poet.blue/cover.png')
-    image = ET.SubElement(channel, 'image')
-    ET.SubElement(image, 'url').text = 'https://things.poet.blue/cover.png'
-    ET.SubElement(image, 'title').text = '誤字ロマの物事'
-    ET.SubElement(image, 'link').text = 'https://things.poet.blue'
-    ET.SubElement(channel, 'atom:link', {
-        'href': 'https://things.poet.blue/rss.xml',
-        'rel': 'self',
-        'type': 'application/rss+xml'
-    })
-
-    for entry in sorted(entries, key=lambda x: x['date'], reverse=True):
-        item = ET.SubElement(channel, 'item')
-        ET.SubElement(item, 'title').text = entry['title']
-        ET.SubElement(item, 'link').text = f"https://things.poet.blue#{entry['title']}"
-        pub_dt = datetime.strptime(entry['date'], '%Y%m%d').replace(tzinfo=JST)
-        ET.SubElement(item, 'pubDate').text = pub_dt.strftime('%a, %d %b %Y 00:00:00 +0900')
-        ET.SubElement(item, 'description').text = entry['content'].replace('\n', '<br />')
-        ET.SubElement(item, 'guid', isPermaLink='false').text = f"urn:things.poet.blue:{entry['title']}"
-        ET.SubElement(item, 'media:content', {
-            'url': f"https://mc.poet.blue/{entry['title']}",
-            'type': 'image/svg+xml',
-            'medium': 'image'
-        })
-
-    rough = ET.tostring(rss, encoding='utf-8', method='xml')
-    reparsed = minidom.parseString(rough)
-    pretty = reparsed.toprettyxml(indent='  ')
-    lines = [line for line in pretty.splitlines() if line.strip()][1:]
-    final_xml = '<?xml version="1.0" encoding="UTF-8"?>\n' + '\n'.join(lines) + '\n'
-    with open(output_file, 'w', encoding='utf-8', newline='\n') as f:
-        f.write(final_xml)
+        if entry['title'] == decoded_title:
+            svg = generate_svg(entry['title'], entry['content'])
+            svg_io = BytesIO(svg.encode('utf-8'))
+            return send_file(svg_io, mimetype='image/svg+xml', as_attachment=False)
+    return "Entry not found", 404
 
 if __name__ == '__main__':
-    with open('entry.md', 'r', encoding='utf-8') as f:
-        markdown_text = f.read()
-    entries = parse_entries(markdown_text)
-    generate_rss(entries, 'rss.xml')
-    print('rss.xml を生成しました！')
+    app.run(port=5002, debug=True)
