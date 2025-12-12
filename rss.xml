@@ -1,1 +1,42 @@
-
+<?xml version="1.0" encoding="UTF-8"?>
+<rss xmlns:atom="http://www.w3.org/2005/Atom" xmlns:itunes="http://www.itunes.com/dtds/podcast-1.0.dtd" xmlns:media="http://search.yahoo.com/mrss/" version="2.0">
+  <channel>
+    <title>誤字ロマの物事</title>
+    <link>https://things.poet.blue</link>
+    <description>誤字ロマの物事です。</description>
+    <language>ja</language>
+    <lastBuildDate>Fri, 12 Dec 2025 18:10:10 +0900</lastBuildDate>
+    <itunes:image href="https://things.poet.blue/cover.png"/>
+    <media:thumbnail url="https://things.poet.blue/cover.png"/>
+    <image>
+      <url>https://things.poet.blue/cover.png</url>
+      <title>誤字ロマの物事</title>
+      <link>https://things.poet.blue</link>
+    </image>
+    <atom:link href="https://things.poet.blue/rss.xml" rel="self" type="application/rss+xml"/>
+    <item>
+      <title>カラビナとストラップ</title>
+      <link>https://things.poet.blue#20251212</link>
+      <pubDate>Fri, 12 Dec 2025 00:00:00 +0900</pubDate>
+      <description>カラビナはベルトに装着するのが容易だが、下手に取り付けようとすると洋服を突き破ってしまうリスクがある。また、ポケットの近くにつけると、ポケットからものを取り出したときに干渉する場合がある。特にカギとスマホなど、当たると傷ついてしまうものは相性が悪い。&lt;br /&gt;  ストラップは長さによって意味が変わってくる。TC</description>
+      <guid isPermaLink="false">urn:things.poet.blue:20251212</guid>
+      <media:content url="https://nc.poet.blue/20251212" type="image/svg+xml" medium="image"/>
+    </item>
+    <item>
+      <title>TC</title>
+      <link>https://things.poet.blue#20251212</link>
+      <pubDate>Fri, 12 Dec 2025 00:00:00 +0900</pubDate>
+      <description>To Comeの略で、後で書くことを表す。</description>
+      <guid isPermaLink="false">urn:things.poet.blue:20251212</guid>
+      <media:content url="https://nc.poet.blue/20251212" type="image/svg+xml" medium="image"/>
+    </item>
+    <item>
+      <title>キッチンタイマー</title>
+      <link>https://things.poet.blue#20251212</link>
+      <pubDate>Fri, 12 Dec 2025 00:00:00 +0900</pubDate>
+      <description>安価に入手できるものを家中に置き、待機を要する作業が発生するたびに作動させると便利。手元に置いて、５分おきに鳴らして進捗を確かめるのもよい。</description>
+      <guid isPermaLink="false">urn:things.poet.blue:20251212</guid>
+      <media:content url="https://nc.poet.blue/20251212" type="image/svg+xml" medium="image"/>
+    </item>
+  </channel>
+</rss>
