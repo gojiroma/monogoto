@@ -5,7 +5,7 @@
     <link>https://things.poet.blue</link>
     <description>誤字ロマの物事です。</description>
     <language>ja</language>
-    <lastBuildDate>Fri, 12 Dec 2025 18:40:02 +0900</lastBuildDate>
+    <lastBuildDate>Fri, 12 Dec 2025 18:41:55 +0900</lastBuildDate>
     <itunes:image href="https://things.poet.blue/cover.png"/>
     <media:thumbnail url="https://things.poet.blue/cover.png"/>
     <image>
@@ -16,7 +16,7 @@
     <atom:link href="https://things.poet.blue/rss.xml" rel="self" type="application/rss+xml"/>
     <item>
       <title>カラビナとストラップ</title>
-      <link>https://things.poet.blue#20251212</link>
+      <link>https://things.poet.blue#カラビナとストラップ</link>
       <pubDate>Fri, 12 Dec 2025 00:00:00 +0900</pubDate>
       <description>カラビナはベルトに装着するのが容易だが、下手に取り付けようとすると洋服を突き破ってしまうリスクがある。また、ポケットの近くにつけると、ポケットからものを取り出したときに干渉する場合がある。特にカギとスマホなど、当たると傷ついてしまうものは相性が悪い。&lt;br /&gt;  ストラップは長さによって意味が変わってくる。TC</description>
       <guid isPermaLink="false">urn:things.poet.blue:20251212</guid>
@@ -24,7 +24,7 @@
     </item>
     <item>
       <title>TC</title>
-      <link>https://things.poet.blue#20251212</link>
+      <link>https://things.poet.blue#TC</link>
       <pubDate>Fri, 12 Dec 2025 00:00:00 +0900</pubDate>
       <description>To Comeの略で、後で書くことを表す。</description>
       <guid isPermaLink="false">urn:things.poet.blue:20251212</guid>
@@ -32,7 +32,7 @@
     </item>
     <item>
       <title>キッチンタイマー</title>
-      <link>https://things.poet.blue#20251212</link>
+      <link>https://things.poet.blue#キッチンタイマー</link>
       <pubDate>Fri, 12 Dec 2025 00:00:00 +0900</pubDate>
       <description>安価に入手できるものを家中に置き、待機を要する作業が発生するたびに作動させると便利。手元に置いて、５分おきに鳴らして進捗を確かめるのもよい。</description>
       <guid isPermaLink="false">urn:things.poet.blue:20251212</guid>
@@ -40,7 +40,7 @@
     </item>
     <item>
       <title>ピザ</title>
-      <link>https://things.poet.blue#20251212</link>
+      <link>https://things.poet.blue#ピザ</link>
       <pubDate>Fri, 12 Dec 2025 00:00:00 +0900</pubDate>
       <description>医者からピザを食べるなと言われたら、かなり困るかもしれない。</description>
       <guid isPermaLink="false">urn:things.poet.blue:20251212</guid>
@@ -48,9 +48,17 @@
     </item>
     <item>
       <title>積んどく本</title>
-      <link>https://things.poet.blue#20251212</link>
+      <link>https://things.poet.blue#積んどく本</link>
       <pubDate>Fri, 12 Dec 2025 00:00:00 +0900</pubDate>
       <description>あればあるほど良い。あとは時間配分の問題。</description>
+      <guid isPermaLink="false">urn:things.poet.blue:20251212</guid>
+      <media:content url="https://mc.poet.blue/20251212" type="image/svg+xml" medium="image"/>
+    </item>
+    <item>
+      <title>猫</title>
+      <link>https://things.poet.blue#猫</link>
+      <pubDate>Fri, 12 Dec 2025 00:00:00 +0900</pubDate>
+      <description>日本の野良猫に慣れすぎていて、ゴージャスできれいな洋猫を見ても親近感がわきにくい</description>
       <guid isPermaLink="false">urn:things.poet.blue:20251212</guid>
       <media:content url="https://mc.poet.blue/20251212" type="image/svg+xml" medium="image"/>
     </item>
