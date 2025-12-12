@@ -62,7 +62,7 @@ def generate_rss(entries, output_file):
         ET.SubElement(item, 'description').text = entry['content'].replace('\n', '<br />')
         ET.SubElement(item, 'guid', isPermaLink='false').text = f"urn:things.poet.blue:{entry['date']}"
         ET.SubElement(item, 'media:content', {
-            'url': f"https://nc.poet.blue/{entry['date']}",
+            'url': f"https://mc.poet.blue/{entry['date']}",
             'type': 'image/svg+xml',
             'medium': 'image'
         })
