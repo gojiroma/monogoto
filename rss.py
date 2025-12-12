@@ -56,7 +56,7 @@ def generate_rss(entries, output_file):
     for entry in sorted(entries, key=lambda x: x['date'], reverse=True):
         item = ET.SubElement(channel, 'item')
         ET.SubElement(item, 'title').text = entry['title']
-        ET.SubElement(item, 'link').text = f"https://things.poet.blue#{entry['date']}"
+        ET.SubElement(item, 'link').text = f"https://things.poet.blue#{entry['title']}"
         pub_dt = datetime.strptime(entry['date'], '%Y%m%d').replace(tzinfo=JST)
         ET.SubElement(item, 'pubDate').text = pub_dt.strftime('%a, %d %b %Y 00:00:00 +0900')
         ET.SubElement(item, 'description').text = entry['content'].replace('\n', '<br />')
