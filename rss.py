@@ -60,9 +60,9 @@ def generate_rss(entries, output_file):
         pub_dt = datetime.strptime(entry['date'], '%Y%m%d').replace(tzinfo=JST)
         ET.SubElement(item, 'pubDate').text = pub_dt.strftime('%a, %d %b %Y 00:00:00 +0900')
         ET.SubElement(item, 'description').text = entry['content'].replace('\n', '<br />')
-        ET.SubElement(item, 'guid', isPermaLink='false').text = f"urn:things.poet.blue:{entry['date']}"
+        ET.SubElement(item, 'guid', isPermaLink='false').text = f"urn:things.poet.blue:{entry['title']}"
         ET.SubElement(item, 'media:content', {
-            'url': f"https://mc.poet.blue/{entry['date']}",
+            'url': f"https://mc.poet.blue/{entry['title']}",
             'type': 'image/svg+xml',
             'medium': 'image'
         })
