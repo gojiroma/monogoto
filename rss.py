@@ -1,11 +1,9 @@
-from flask import Flask, send_file, request
 from werkzeug.urls import unquote
 import requests
 import re
 import random
 from io import BytesIO
 
-app = Flask(__name__)
 
 def fetch_entry_md(url):
     response = requests.get(url)
